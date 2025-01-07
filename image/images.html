@@ -165,7 +165,7 @@
 
 <body>
 
-    <!-- Gallery Card 1 -->
+    
     <div class="gallery-container">
         <h1>Denim Jacket Gallery 1</h1>
         <img id="mainImage1" src="https://m.media-amazon.com/images/I/61WswLTIRqL._SY741_.jpg" alt="Denim Jacket Front View" class="main-image">
@@ -183,7 +183,7 @@
         </div>
     </div>
 
-    <!-- Gallery Card 2 -->
+   
     <div class="gallery-container">
         <h1>Denim Jacket Gallery 2</h1>
         <img id="mainImage2" src="https://m.media-amazon.com/images/I/71kh27MQabL._SY741_.jpg" alt="Denim Jacket Front View" class="main-image">
@@ -201,7 +201,7 @@
         </div>
     </div>
 
-    <!-- Gallery Card 3 -->
+   
     <div class="gallery-container">
         <h1>Denim Jacket Gallery 3</h1>
         <img id="mainImage3" src="https://m.media-amazon.com/images/I/510EN5eXNPL._SY741_.jpg" alt="Denim Jacket Front View" class="main-image">
@@ -219,7 +219,7 @@
         </div>
     </div>
 
-    <!-- Payment Form -->
+   
     <div id="paymentForm" class="payment-form">
         <h2>Enter Payment Information</h2>
         <input type="text" placeholder="Card Number" id="cardNumber" required>
@@ -229,7 +229,7 @@
         <button onclick="processPayment()">Submit Payment</button>
     </div>
 
-    <!-- Payment Success Message -->
+  
     <div id="paymentSuccess" class="payment-success">
         Payment processed successfully!
     </div>
@@ -239,7 +239,7 @@
             const mainImage = document.getElementById('mainImage' + galleryNumber);
             mainImage.src = thumbnail.src;
             
-            // Update active thumbnail class
+           
             const thumbnails = document.querySelectorAll('.gallery-container:nth-child(' + galleryNumber + ') .thumbnail');
             thumbnails.forEach(thumb => thumb.classList.remove('active'));
             thumbnail.classList.add('active');
@@ -255,7 +255,7 @@
         }
 
         function processPayment() {
-            // Simple validation for payment form (add more complex validation as needed)
+           
             const cardNumber = document.getElementById('cardNumber').value;
             const cardName = document.getElementById('cardName').value;
             const expiryDate = document.getElementById('expiryDate').value;
@@ -270,7 +270,7 @@
             document.getElementById('paymentForm').style.display = 'none';
             document.getElementById('paymentSuccess').style.display = 'block';
 
-            // Hide success message after a few seconds
+            
             setTimeout(() => {
                 document.getElementById('paymentSuccess').style.display = 'none';
             }, 3000);
