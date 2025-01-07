@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Image Gallery</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f3f4f6, #e8eaed);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+
+        .gallery-container {
+            width: 322px;
+            text-align: center;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 15px 15px 10px;
+            margin: 20px 10px;
+        }
+
+        .main-image {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .main-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .thumbnail-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            padding: 5px 5px;
+            background-color: #f9fafb;
+            border-radius: 8px;
+            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .thumbnail {
+            width: 50px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .thumbnail:hover {
+            transform: scale(1.1);
+            border-color: #007bff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .thumbnail.active {
+            border-color: #007bff;
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .btn-container {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .payment-form {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        .payment-form button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .payment-form button:hover {
+            background-color: #218838;
+        }
+
+        .payment-success {
+            display: none;
+            margin-top: 20px;
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-container {
+                width: 95%;
+                margin: 10px;
+            }
+
+            .thumbnail {
+                width: 65px;
+                height: 65px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Gallery Card 1 -->
+    <div class="gallery-container">
+        <h1>Denim Jacket Gallery 1</h1>
+        <img id="mainImage1" src="https://m.media-amazon.com/images/I/61WswLTIRqL._SY741_.jpg" alt="Denim Jacket Front View" class="main-image">
+        <div class="thumbnail-container">
+            <img src="https://m.media-amazon.com/images/I/61WswLTIRqL._SY741_.jpg" alt="Front View" class="thumbnail active" onclick="changeImage(this, 1)">
+            <img src="https://m.media-amazon.com/images/I/61EOLk-Bo9L._SY741_.jpg" alt="Neck View" class="thumbnail" onclick="changeImage(this, 1)">
+            <img src="https://m.media-amazon.com/images/I/61hquJvYXKL._SY741_.jpg" alt="Chest View" class="thumbnail" onclick="changeImage(this, 1)">
+            <img src="https://m.media-amazon.com/images/I/614MEXjMUOL._SY741_.jpg" alt="Sleeve View" class="thumbnail" onclick="changeImage(this, 1)">
+            <img src="https://m.media-amazon.com/images/I/61issFwHQEL._SY741_.jpg" alt="Back View" class="thumbnail" onclick="changeImage(this, 1)">
+        </div>
+        <p><strong>Price:</strong> $79.99</p>
+        <div class="btn-container">
+            <button class="btn" onclick="addToCart(1)">Add to Cart</button>
+            <button class="btn" onclick="buyNow(1)">Buy Now</button>
+        </div>
+    </div>
+
+    <!-- Gallery Card 2 -->
+    <div class="gallery-container">
+        <h1>Denim Jacket Gallery 2</h1>
+        <img id="mainImage2" src="https://m.media-amazon.com/images/I/71kh27MQabL._SY741_.jpg" alt="Denim Jacket Front View" class="main-image">
+        <div class="thumbnail-container">
+            <img src="https://m.media-amazon.com/images/I/71kh27MQabL._SY741_.jpg" alt="Front View" class="thumbnail active" onclick="changeImage(this, 2)">
+            <img src="https://m.media-amazon.com/images/I/71Wnjaxr8cL._SY741_.jpg" alt="Neck View" class="thumbnail" onclick="changeImage(this, 2)">
+            <img src="https://m.media-amazon.com/images/I/61lePtqMnLL._SY741_.jpg" alt="Chest View" class="thumbnail" onclick="changeImage(this, 2)">
+            <img src="https://m.media-amazon.com/images/I/61lePtqMnLL._SY741_.jpg" alt="Sleeve View" class="thumbnail" onclick="changeImage(this, 2)">
+            <img src="https://m.media-amazon.com/images/I/61Z3D0ZLYWL._SY741_.jpg" alt="Back View" class="thumbnail" onclick="changeImage(this, 2)">
+        </div>
+        <p><strong>Price:</strong> $89.99</p>
+        <div class="btn-container">
+            <button class="btn" onclick="addToCart(2)">Add to Cart</button>
+            <button class="btn" onclick="buyNow(2)">Buy Now</button>
+        </div>
+    </div>
+
+    <!-- Gallery Card 3 -->
+    <div class="gallery-container">
+        <h1>Denim Jacket Gallery 3</h1>
+        <img id="mainImage3" src="https://m.media-amazon.com/images/I/510EN5eXNPL._SY741_.jpg" alt="Denim Jacket Front View" class="main-image">
+        <div class="thumbnail-container">
+            <img src="https://m.media-amazon.com/images/I/510EN5eXNPL._SY741_.jpg" alt="Front View" class="thumbnail active" onclick="changeImage(this, 3)">
+            <img src="https://m.media-amazon.com/images/I/510cJ9NCdCL.jpg" alt="Neck View" class="thumbnail" onclick="changeImage(this, 3)">
+            <img src="https://m.media-amazon.com/images/I/51qB14wZJAL.jpg" alt="Chest View" class="thumbnail" onclick="changeImage(this, 3)">
+            <img src="https://m.media-amazon.com/images/I/510cJ9NCdCL.jpg" alt="Sleeve View" class="thumbnail" onclick="changeImage(this, 3)">
+            <img src="https://m.media-amazon.com/images/I/51Z-2Wnwy0L.jpg" alt="Back View" class="thumbnail" onclick="changeImage(this, 3)">
+        </div>
+        <p><strong>Price:</strong> $99.99</p>
+        <div class="btn-container">
+            <button class="btn" onclick="addToCart(3)">Add to Cart</button>
+            <button class="btn" onclick="buyNow(3)">Buy Now</button>
+        </div>
+    </div>
+
+    <!-- Payment Form -->
+    <div id="paymentForm" class="payment-form">
+        <h2>Enter Payment Information</h2>
+        <input type="text" placeholder="Card Number" id="cardNumber" required>
+        <input type="text" placeholder="Name on Card" id="cardName" required>
+        <input type="text" placeholder="Expiry Date (MM/YY)" id="expiryDate" required>
+        <input type="text" placeholder="CVV" id="cvv" required>
+        <button onclick="processPayment()">Submit Payment</button>
+    </div>
+
+    <!-- Payment Success Message -->
+    <div id="paymentSuccess" class="payment-success">
+        Payment processed successfully!
+    </div>
+
+    <script>
+        function changeImage(thumbnail, galleryNumber) {
+            const mainImage = document.getElementById('mainImage' + galleryNumber);
+            mainImage.src = thumbnail.src;
+            
+            // Update active thumbnail class
+            const thumbnails = document.querySelectorAll('.gallery-container:nth-child(' + galleryNumber + ') .thumbnail');
+            thumbnails.forEach(thumb => thumb.classList.remove('active'));
+            thumbnail.classList.add('active');
+        }
+
+        function addToCart(galleryNumber) {
+            alert('Item added to cart (Gallery ' + galleryNumber + ')');
+        }
+
+        function buyNow(galleryNumber) {
+            alert('Proceeding to payment for Gallery ' + galleryNumber);
+            document.getElementById('paymentForm').style.display = 'block';
+        }
+
+        function processPayment() {
+            // Simple validation for payment form (add more complex validation as needed)
+            const cardNumber = document.getElementById('cardNumber').value;
+            const cardName = document.getElementById('cardName').value;
+            const expiryDate = document.getElementById('expiryDate').value;
+            const cvv = document.getElementById('cvv').value;
+
+            if (!cardNumber || !cardName || !expiryDate || !cvv) {
+                alert('Please fill in all the fields.');
+                return;
+            }
+
+            // Simulating payment success
+            document.getElementById('paymentForm').style.display = 'none';
+            document.getElementById('paymentSuccess').style.display = 'block';
+
+            // Hide success message after a few seconds
+            setTimeout(() => {
+                document.getElementById('paymentSuccess').style.display = 'none';
+            }, 3000);
+        }
+    </script>
+
+</body>
+
+</html>
