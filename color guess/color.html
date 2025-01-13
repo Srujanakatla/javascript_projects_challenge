@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enhanced Color Guessing Game</title>
+    <style>
+      /* Keep the previous styles and update if necessary */
+      body {
+        font-family: "Arial", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #2193b0, #6dd5ed);
+        animation: gradientAnimation 12s infinite ease-in-out;
+      }
+
+      @keyframes gradientAnimation {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .container {
+        max-width: 420px;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+
+      .level-selector {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+
+      .level-btn {
+        padding: 10px 15px;
+        background-color: #ff7043;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: transform 0.2s ease, background-color 0.3s ease;
+      }
+
+      .level-btn:hover {
+        transform: scale(1.1);
+        background-color: #d84315;
+      }
+
+      .hint-btn {
+        margin-top: 10px;
+        background-color: #2ecc71;
+      }
+
+      .hint-btn:hover {
+        background-color: #27ae60;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Enhanced Color Guessing Game</h1>
+      <div class="color-box" id="colorBox"></div>
+      <div id="buttonsContainer"></div>
+      <div class="level-selector">
+        <button class="level-btn" data-level="4">Easy</button>
+        <button class="level-btn" data-level="6">Medium</button>
+        <button class="level-btn" data-level="8">Hard</button>
+      </div>
+      <button id="hintBtn" class="level-btn hint-btn">Get Hint</button>
+      <p id="result"></p>
+      <p id="score"></p>
+      <p id="streak">Longest Streak: 0</p>
+      <button id="newGame">Start New Game</button>
+    </div>
+
+    <script>
+      const colorBox = document.getElementById("colorBox");
+      const buttonsContainer = document.getElementById("buttonsContainer");
+      const resultDisplay = document.getElementById("result");
+      const scoreDisplay = document.getElementById("score");
+      const streakDisplay = document.getElementById("streak");
+      const hintBtn = document.getElementById("hintBtn");
+      const newGameButton = document.getElementById("newGame");
+      const levelButtons = document.querySelectorAll(".level-btn[data-level]");
+
+      let correctHex;
+      let correctCount = 0;
+      let longestStreak = 0;
+      let currentStreak = 0;
+      let totalRounds = 10;
+      let currentRound = 1;
+      let level = 4; // Default to "Easy"
+
+      // Generate random color
+      function generateRandomHexColor() {
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
+        return `#${r.toString(16).padStart(2, "0")}${g
+          .toString(16)
+          .padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+      }
+
+      function lightenDarkenColor(col, amt) {
+        let usePound = false;
+        if (col[0] === "#") {
+          col = col.slice(1);
+          usePound = true;
+        }
+
+        let num = parseInt(col, 16);
+        let r = (num >> 16) + amt;
+        let g = ((num >> 8) & 0x00ff) + amt;
+        let b = (num & 0x0000ff) + amt;
+
+        r = r > 255 ? 255 : r < 0 ? 0 : r;
+        g = g > 255 ? 255 : g < 0 ? 0 : g;
+        b = b > 255 ? 255 : b < 0 ? 0 : b;
+
+        return (usePound ? "#" : "") + (r << 16 | g << 8 | b).toString(16).padStart(6, "0");
+      }
+
+      function setGame() {
+        buttonsContainer.innerHTML = ""; // Clear previous buttons
+        correctHex = generateRandomHexColor();
+        colorBox.style.backgroundColor = correctHex;
+
+        const options = [correctHex];
+        while (options.length < level) {
+          const newColor = generateRandomHexColor();
+          if (!options.includes(newColor)) options.push(newColor);
+        }
+
+        options.sort(() => Math.random() - 0.5); // Shuffle buttons
+
+        options.forEach((color) => {
+          const button = document.createElement("button");
+          button.classList.add("hex-btn");
+          button.style.backgroundColor = color;
+          button.textContent = color;
+          button.onclick = () => handleButtonClick(color);
+          buttonsContainer.appendChild(button);
+        });
+      }
+
+      function handleButtonClick(color) {
+        if (color === correctHex) {
+          resultDisplay.textContent = "Correct!";
+          resultDisplay.style.color = "green";
+          correctCount++;
+          currentStreak++;
+          longestStreak = Math.max(longestStreak, currentStreak);
+        } else {
+          resultDisplay.textContent = "Wrong! The correct color was " + correctHex;
+          resultDisplay.style.color = "red";
+          currentStreak = 0;
+        }
+        updateScore();
+        if (++currentRound <= totalRounds) setGame();
+        else endGame();
+      }
+
+      function updateScore() {
+        scoreDisplay.textContent = `Score: ${correctCount}/${totalRounds}`;
+        streakDisplay.textContent = `Longest Streak: ${longestStreak}`;
+      }
+
+      function endGame() {
+        resultDisplay.textContent = "Game Over!";
+        newGameButton.disabled = false;
+      }
+
+      hintBtn.addEventListener("click", () => {
+        colorBox.style.backgroundColor = lightenDarkenColor(correctHex, 20);
+        setTimeout(() => (colorBox.style.backgroundColor = correctHex), 1000);
+      });
+
+      newGameButton.addEventListener("click", () => {
+        correctCount = 0;
+        currentRound = 1;
+        currentStreak = 0;
+        longestStreak = 0;
+        updateScore();
+        setGame();
+        newGameButton.disabled = true;
+      });
+
+      levelButtons.forEach((btn) =>
+        btn.addEventListener("click", (e) => {
+          level = parseInt(e.target.getAttribute("data-level"));
+          newGameButton.click(); // Restart the game
+        })
+      );
+
+      setGame();
+    </script>
+  </body>
+</html>
